@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
+
+
+
+
+<style>
+
+        table, th, td
+        {
+            margin:10px 0;
+            border:solid 1px #333;
+            padding:2px 4px;
+            font:15px Verdana;
+        }
+        th {
+            font-weight:bold;
+        }
+
+//#loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid blue;
+  border-bottom: 16px solid blue;
+  width: 30px;
+  height: 30px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  visibility:hidden;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+</style>
+<!--script src="cordova.js"></script>-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+
+
+<form >
+
+Select Predrill Hole Number:
+<select id="HoleList" onchange="Predrill()">
+<option selected="selected">--Please Select--</option>
+<option>PD-T1BP01</option>
+<option>PD-T1BP02</option>
+
+
+</select>
+
+<name ="name" id="name">
+
+
+</form>
+<br>
+
+<input type="button" onclick="update_value()" value="Update" />
+<!--<input type="button" onclick="read_value()" value="Read" />-->
+<!--<a href="https://docs.google.com/spreadsheets/d/1_LNyU2DB0Tg3caKA7klePACWOgASbek4I5LqOysxFaY/edit?usp=sharing" rel="external">Click here to open Spread Sheet </a>-->
+<div id="showData" align="center"></div>
+</div>
+<div style="text-align: center;">
+<a href="" id="photo1"><img id="pic1" src="" alt="" ><a>
+<br>
+
+<a href="" id="photo2"><img id="pic2" src="" alt="" ><a>
+<br>
+
+<a href="" id="photo3"><img id="pic3" src="" alt="" ><a>
+<br>
+
+<a href="" id="photo4"><img id="pic4" src="" alt="" ><a>
+<br>
+
+<a href="" id="photo5"><img id="pic5" src="" alt="" ><a>
+<br>
+
+<a href="" id="photo6"><img id="pic6" src="" alt="" ><a>
+<br>
+
+<a href="" id="photo7"><img id="pic7" src="" alt="" ><a>
+</div>
+
+
+<script>
+
+  var script_url = "https://script.google.com/macros/s/AKfycbzHtuKZACiuwQmCc8PqrRAK-nWm61ZtaZpy1Rr7c1Bub1GeThA/exec";
+
+  // Make an AJAX call to Google Script
+
+
+
+
+
+
+
+  function update_value(){
+	$("#re").css("visibility","hidden");
+     document.getElementById("loader").style.visibility = "visible";
+
+
+var id1=	$("#id").val();
+	var name= $("#name").val();
+
+
+
+    var url = script_url+"?callback=ctrlq&name="+name+"&id="+id1+"&action=update";
+
+
+    var request = jQuery.ajax({
+      crossDomain: true,
+      url: url ,
+      method: "GET",
+      dataType: "jsonp"
+    });
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+  // print the returned data
+  function ctrlq(e) {
+
+
+	$("#re").html(e.result);
+	$("#re").css("visibility","visible");
+	read_value();
+
+  }
+
+
+
+
+function read_value() {
+
+$("#re").css("visibility","hidden");
+
+   document.getElementById("loader").style.visibility = "visible";
+ var url = script_url+"?action=read";
+
+$.getJSON(url, function (json) {
+
+    // Set the variables from the results array
+
+
+
+
+        // CREATE DYNAMIC TABLE.
+        var table = document.createElement("table");
+
+
+
+        var header = table.createTHead();
+        var row = header.insertRow(0);
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		cell1.innerHTML = "<b>Item</b>";
+		cell2.innerHTML = "<b>Data</b>";
+
+        // ADD JSON DATA TO THE TABLE AS ROWS.
+        for (var i = 0; i < json.records.length; i++) {
+
+            tr = table.insertRow(-1);
+				var tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = json.records[i].Heading;
+				tabCell = tr.insertCell(-1);
+				tabCell.innerHTML = json.records[i].Information;
+            }
+var myObj=json.records[0];
+document.getElementById("photo1").href="https://drive.google.com/uc?id=" + myObj.Photo1 ; 
+document.getElementById("pic1").src="https://drive.google.com/thumbnail?id="+ myObj.Photo1 + "&authuser=0";
+
+document.getElementById("photo2").href="https://drive.google.com/uc?id=" + myObj.Photo2; 
+document.getElementById("pic2").src="https://drive.google.com/thumbnail?id="+myObj.Photo2+ "&authuser=0";
+
+document.getElementById("photo3").href="https://drive.google.com/uc?id=" + myObj.Photo3; 
+document.getElementById("pic3").src="https://drive.google.com/thumbnail?id="+myObj.Photo3+ "&authuser=0";
+
+document.getElementById("photo4").href="https://drive.google.com/uc?id=" + myObj.Photo4; 
+document.getElementById("pic4").src="https://drive.google.com/thumbnail?id="+myObj.Photo4+ "&authuser=0";
+
+document.getElementById("photo5").href="https://drive.google.com/uc?id=" + myObj.Photo5; 
+document.getElementById("pic5").src="https://drive.google.com/thumbnail?id="+myObj.Photo5+ "&authuser=0";
+
+document.getElementById("photo6").href="https://drive.google.com/uc?id=" + myObj.Photo6; 
+document.getElementById("pic6").src="https://drive.google.com/thumbnail?id="+myObj.Photo6+ "&authuser=0";
+
+document.getElementById("photo7").href="https://drive.google.com/uc?id=" + myObj.Photo7; 
+document.getElementById("pic7").src="https://drive.google.com/thumbnail?id="+myObj.Photo7+ "&authuser=0";
+
+
+        // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        var divContainer = document.getElementById("showData");
+        divContainer.innerHTML = "";
+        divContainer.appendChild(table);
+		document.getElementById("loader").style.visibility = "hidden";
+		$("#re").css("visibility","visible");
+    });
+	}
+
+
+function Predrill()
+{
+var HoleList=document.getElementById("HoleList");
+document.getElementById("name").value=HoleList.options[HoleList.selectedIndex].text;
+}
+
+  </script>
+
+
+
+
+</head>
+<body>
+
+
+
+<div id="loader"></div>
+
+<p id="re"></p>
+
+
+
+</body>
+
+
+
+<div align="center">
+<p> | All Rights Reserved |</p>
+</div>
+<html>
